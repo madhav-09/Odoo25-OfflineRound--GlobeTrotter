@@ -4,6 +4,15 @@
 
 A feature-rich travel planning application built with React.js and Node.js, featuring a stunning dark-mode interface with purple-violet theme and glass morphism effects.
 
+Video Link : - https://youtu.be/d3P7FyIWLZE
+
+| 👥 Team Members    | Email                                                           |
+| ------------------ | --------------------------------------------------------------- |
+| Madhav Tiwari      | [tiwarimadhav2309@gmail.com](mailto:tiwarimadhav2309@gmail.com) |
+| Rahul Patel        | [onlinerahulpatel@gmail.com](mailto:onlinerahulpatel@gmail.com) |
+| Oad Harsh Kanubhai | [harshoad7205@gmail.com](mailto:harshoad7205@gmail.com)         |
+
+
 ## ✨ Key Features
 
 ### 🔐 Authentication & User Management
@@ -24,6 +33,16 @@ A feature-rich travel planning application built with React.js and Node.js, feat
 - **Social Sharing** with QR codes and multiple platforms
 
 ### 🎨 Modern UI/UX
+
+![WhatsApp Image 2025-08-12 at 10 20 48_f4449682](https://github.com/user-attachments/assets/0378d29d-6fcf-4fa3-ba99-83eba51969c0)
+![WhatsApp Image 2025-08-12 at 10 20 49_fbde027f](https://github.com/user-attachments/assets/f91485bd-a3fc-4312-a067-ccbf688c75a5)
+![WhatsApp Image 2025-08-12 at 10 25 01_dc4b18bc](https://github.com/user-attachments/assets/b9c565f5-d2b8-435a-ac64-0566f1334d28)
+![WhatsApp Image 2025-08-12 at 10 35 46_01a820f1](https://github.com/user-attachments/assets/1bf7a258-43e8-4b61-beef-9fc9b280f469)
+![WhatsApp Image 2025-08-12 at 10 37 36_446f0ab2](https://github.com/user-attachments/assets/8c5d1852-3a1b-41c2-9276-9ddf1c3256f1)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ee084256-9db8-4404-9b2f-7420ae921f13" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e76b7e01-1a17-4400-9814-f99c164de0ba" />
+
+
 - **Dark Mode by Default** with light mode toggle
 - **Glass Morphism Effects** with smooth animations
 - **Responsive Design** across all devices

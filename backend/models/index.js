@@ -16,6 +16,8 @@ const Story = require('./Story');
 const Post = require('./Post');
 const PostComment = require('./PostComment');
 const UserFollow = require('./UserFollow');
+const CommunityMember = require('./CommunityMember');
+const Friendship = require('./Friendship');
 
 // User-Trip associations
 User.hasMany(Trip, { foreignKey: 'userId', as: 'trips' });
@@ -60,11 +62,21 @@ TripComment.belongsTo(TripComment, { foreignKey: 'parentId', as: 'parent' });
 User.hasOne(UserProfile, { foreignKey: 'userId', as: 'profile' });
 UserProfile.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
-// User-Follow associations
+// User-Follow associations (Legacy - keeping for backward compatibility)
 User.hasMany(UserFollow, { foreignKey: 'followerId', as: 'following' });
 User.hasMany(UserFollow, { foreignKey: 'followingId', as: 'followers' });
 UserFollow.belongsTo(User, { foreignKey: 'followerId', as: 'follower' });
 UserFollow.belongsTo(User, { foreignKey: 'followingId', as: 'following' });
+
+// Friendship associations (New unified system)
+User.hasMany(Friendship, { foreignKey: 'requesterId', as: 'sentFriendRequests' });
+User.hasMany(Friendship, { foreignKey: 'addresseeId', as: 'receivedFriendRequests' });
+Friendship.belongsTo(User, { foreignKey: 'requesterId', as: 'requester' });
+Friendship.belongsTo(User, { foreignKey: 'addresseeId', as: 'addressee' });
+
+// Community Member associations
+User.hasMany(CommunityMember, { foreignKey: 'userId', as: 'communityMemberships' });
+CommunityMember.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 // Group associations
 User.hasMany(UserGroup, { foreignKey: 'createdBy', as: 'createdGroups' });
@@ -123,5 +135,7 @@ module.exports = {
   Story,
   Post,
   PostComment,
-  UserFollow
+  UserFollow,
+  CommunityMember,
+  Friendship
 };

@@ -1,4 +1,4 @@
-const { User, UserProfile, UserFollow, Post, PostComment, Story, UserGroup, GroupMember, Chat, ChatParticipant, Message, StoryLike } = require('../models');
+const { User, UserProfile, UserFollow, Post, PostComment, Story, UserGroup, GroupMember, Chat, ChatParticipant, Message, StoryLike, Friendship } = require('../models');
 const { Op } = require('sequelize');
 
 // Profile Management
@@ -23,23 +23,39 @@ const createProfile = async (req, res) => {
 };
 
 // Send Friend Request
-const followUser = async (req, res) => {
+const sendFriendRequest = async (req, res) => {
   try {
     const { userId } = req.params;
-    const follower = await User.findOne({ where: { cognitoId: req.user.cognitoId } });
+    const requester = await User.findOne({ where: { cognitoId: req.user.cognitoId } });
     
-    const existingFollow = await UserFollow.findOne({
-      where: { followerId: follower.id, followingId: userId }
-    });
-    
-    if (existingFollow) {
-      await existingFollow.destroy();
-      return res.json({ message: 'Friend request cancelled', status: 'none' });
+    if (requester.id === userId) {
+      return res.status(400).json({ error: 'Cannot send friend request to yourself' });
     }
     
-    await UserFollow.create({
-      followerId: follower.id,
-      followingId: userId,
+    const existingFriendship = await Friendship.findOne({
+      where: {
+        [require('sequelize').Op.or]: [
+          { requesterId: requester.id, addresseeId: userId },
+          { requesterId: userId, addresseeId: requester.id }
+        ]
+      }
+    });
+    
+    if (existingFriendship) {
+      if (existingFriendship.status === 'accepted') {
+        return res.json({ message: 'Already friends', status: 'accepted' });
+      }
+      if (existingFriendship.status === 'pending') {
+        return res.json({ message: 'Friend request already sent', status: 'pending' });
+      }
+      if (existingFriendship.status === 'blocked') {
+        return res.status(403).json({ error: 'Cannot send friend request' });
+      }
+    }
+    
+    await Friendship.create({
+      requesterId: requester.id,
+      addresseeId: userId,
       status: 'pending'
     });
     
@@ -53,11 +69,11 @@ const followUser = async (req, res) => {
 const handleFriendRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
-    const { action } = req.body; // 'accept' or 'reject'
+    const { action } = req.body; // 'accept', 'decline', or 'block'
     const user = await User.findOne({ where: { cognitoId: req.user.cognitoId } });
     
-    const friendRequest = await UserFollow.findOne({
-      where: { id: requestId, followingId: user.id, status: 'pending' }
+    const friendRequest = await Friendship.findOne({
+      where: { id: requestId, addresseeId: user.id, status: 'pending' }
     });
     
     if (!friendRequest) {
@@ -67,9 +83,12 @@ const handleFriendRequest = async (req, res) => {
     if (action === 'accept') {
       await friendRequest.update({ status: 'accepted' });
       res.json({ message: 'Friend request accepted' });
+    } else if (action === 'block') {
+      await friendRequest.update({ status: 'blocked' });
+      res.json({ message: 'User blocked' });
     } else {
-      await friendRequest.destroy();
-      res.json({ message: 'Friend request rejected' });
+      await friendRequest.update({ status: 'declined' });
+      res.json({ message: 'Friend request declined' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -81,9 +100,9 @@ const getFriendRequests = async (req, res) => {
   try {
     const user = await User.findOne({ where: { cognitoId: req.user.cognitoId } });
     
-    const requests = await UserFollow.findAll({
-      where: { followingId: user.id, status: 'pending' },
-      include: [{ model: User, as: 'follower', attributes: ['id', 'firstName', 'lastName'] }]
+    const requests = await Friendship.findAll({
+      where: { addresseeId: user.id, status: 'pending' },
+      include: [{ model: User, as: 'requester', attributes: ['id', 'firstName', 'lastName'] }]
     });
     
     res.json({ requests });
@@ -92,66 +111,20 @@ const getFriendRequests = async (req, res) => {
   }
 };
 
-// Create Post
-const createPost = async (req, res) => {
-  try {
-    const { content, images, location, privacy, tripId, groupId } = req.body;
-    const user = await User.findOne({ where: { cognitoId: req.user.cognitoId } });
-    
-    const post = await Post.create({
-      userId: user.id,
-      content,
-      images: images || [],
-      location,
-      privacy: privacy || 'public',
-      tripId,
-      groupId
-    });
-    
-    res.status(201).json({ post });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
-// Get Feed Posts (Public - all users can see)
-const getFeedPosts = async (req, res) => {
-  try {
-    const posts = await Post.findAll({
-      where: { privacy: 'public', isActive: true },
-      include: [
-        { 
-          model: User, 
-          as: 'user', 
-          attributes: ['id', 'firstName', 'lastName'],
-          include: [{ model: UserProfile, as: 'profile', attributes: ['profilePicture'] }]
-        },
-        { 
-          model: PostComment, 
-          as: 'comments', 
-          limit: 3, 
-          include: [{ model: User, as: 'user', attributes: ['firstName', 'lastName'] }] 
-        }
-      ],
-      order: [['createdAt', 'DESC']],
-      limit: 20
-    });
-    
-    res.json({ posts });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
-// Check if users are friends (mutual accepted follows)
+// Check if users are friends
 const checkFriendship = async (userId1, userId2) => {
-  const friendship1 = await UserFollow.findOne({
-    where: { followerId: userId1, followingId: userId2, status: 'accepted' }
+  const friendship = await Friendship.findOne({
+    where: {
+      status: 'accepted',
+      [require('sequelize').Op.or]: [
+        { requesterId: userId1, addresseeId: userId2 },
+        { requesterId: userId2, addresseeId: userId1 }
+      ]
+    }
   });
-  const friendship2 = await UserFollow.findOne({
-    where: { followerId: userId2, followingId: userId1, status: 'accepted' }
-  });
-  return !!(friendship1 && friendship2);
+  return !!friendship;
 };
 
 // Create Story
@@ -317,11 +290,10 @@ const joinGroup = async (req, res) => {
 
 module.exports = {
   createProfile,
-  followUser,
+  sendFriendRequest,
   handleFriendRequest,
   getFriendRequests,
-  createPost,
-  getFeedPosts,
+
   createStory,
   getStories,
   likeStory,

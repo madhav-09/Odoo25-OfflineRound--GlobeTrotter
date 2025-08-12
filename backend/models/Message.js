@@ -9,12 +9,17 @@ const Message = sequelize.define('Message', {
   },
   chatId: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true, // Allow null for community messages
     references: {
       model: 'Chats',
       key: 'id'
     },
     onDelete: 'CASCADE'
+  },
+  groupId: {
+    type: DataTypes.STRING,
+    allowNull: true, // For community group messages
+    defaultValue: null
   },
   senderId: {
     type: DataTypes.UUID,

@@ -1,4 +1,4 @@
-const { Chat, ChatParticipant, Message, User, UserGroup } = require('../models');
+const { Chat, ChatParticipant, Message, User, UserGroup, Friendship } = require('../models');
 
 // Create Individual Chat (Friends Only)
 const createIndividualChat = async (req, res) => {
@@ -6,9 +6,18 @@ const createIndividualChat = async (req, res) => {
     const { participantId } = req.body;
     const user = await User.findOne({ where: { cognitoId: req.user.cognitoId } });
     
-    // Check if users are friends
-    const { checkFriendship } = require('./socialController');
-    const areFriends = await checkFriendship(user.id, participantId);
+    // Check if users are friends (mutual accepted friendship)
+    const friendship = await Friendship.findOne({
+      where: {
+        status: 'accepted',
+        [require('sequelize').Op.or]: [
+          { requesterId: user.id, addresseeId: participantId },
+          { requesterId: participantId, addresseeId: user.id }
+        ]
+      }
+    });
+    
+    const areFriends = !!friendship;
     
     if (!areFriends) {
       return res.status(403).json({ error: 'You can only chat privately with friends. Follow each other first.' });

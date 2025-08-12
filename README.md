@@ -1,149 +1,226 @@
-# GlobeTrotter - Travel Planning Application
+# 🌍 GlobeTrotter - Travel Planning Application
 
-A modern, intuitive travel planning application built with React.js and Node.js, featuring a sleek purple-violet theme with glass morphism effects.
+> **Odoo 25 Offline Round Submission** - A comprehensive travel planning platform with modern UI/UX
 
-## 🌟 Features
+A feature-rich travel planning application built with React.js and Node.js, featuring a stunning dark-mode interface with purple-violet theme and glass morphism effects.
 
-- **User Authentication**: AWS Cognito integration with custom UI
-- **Trip Management**: Create, view, edit, and delete travel itineraries
-- **Interactive Dashboard**: Quick actions and travel statistics
-- **Destination Discovery**: Explore popular destinations with search and filters
-- **Responsive Design**: Fully responsive across all devices
-- **Modern UI**: Glass morphism effects with smooth animations
-- **Dark/Light Mode**: Theme switcher with system preference detection
+## ✨ Key Features
 
-## 🚀 Tech Stack
+### 🔐 Authentication & User Management
+- **AWS Cognito Integration** with custom UI
+- **User Profiles** with image upload and social features
+- **Role-based Access Control** (Admin/User)
 
-### Frontend
-- React.js 18
-- React Router DOM
-- React Icons
-- Pure CSS with CSS Variables
-- AWS Cognito SDK
+### 🗺️ Trip Planning & Management
+- **Interactive Trip Builder** with drag-and-drop itinerary
+- **Budget Tracking** with expense categorization
+- **Calendar Integration** with timeline view
+- **Collaborative Planning** with real-time sharing
 
-### Backend
-- Node.js
-- Express.js
-- PostgreSQL (AWS RDS)
-- Sequelize ORM
-- AWS Cognito
-- JWT Authentication
+### 🌟 Social & Discovery Features
+- **Public Itinerary Explorer** (Landing page for non-authenticated users)
+- **Travel Stories** with community sharing
+- **City Discovery** with comprehensive data (currency, population, weather)
+- **Social Sharing** with QR codes and multiple platforms
 
-## 📦 Installation
+### 🎨 Modern UI/UX
+- **Dark Mode by Default** with light mode toggle
+- **Glass Morphism Effects** with smooth animations
+- **Responsive Design** across all devices
+- **Inter Font** (Google Sans alternative) throughout
+- **Scroll-to-top** functionality with royal violet styling
+
+## 🚀 Technology Stack
+
+### Frontend Technologies
+- **React.js 18** - Modern component-based architecture
+- **React Router DOM** - Client-side routing
+- **React Icons** - Consistent iconography
+- **CSS Variables** - Dynamic theming system
+- **AWS Cognito SDK** - Authentication integration
+
+### Backend Technologies
+- **Node.js** - Server runtime
+- **Express.js** - Web application framework
+- **PostgreSQL (AWS RDS)** - Production database
+- **Sequelize ORM** - Database modeling and queries
+- **JWT Authentication** - Secure token-based auth
+- **Multer** - File upload handling
+
+### Infrastructure & Deployment
+- **AWS RDS PostgreSQL** - Managed database service
+- **AWS Cognito** - User authentication and management
+- **Environment-based Configuration** - Development/Production setups
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js (v16 or higher)
+- PostgreSQL database
+- AWS Account (for Cognito and RDS)
+
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd globetrotter
+   git clone https://github.com/madhav-09/Odoo25-OfflineRound--GlobeTrotter.git
+   cd Odoo25-OfflineRound--GlobeTrotter
    ```
 
 2. **Install dependencies**
    ```bash
-   # Install backend dependencies
+   # Backend dependencies
    cd backend
    npm install
    
-   # Install frontend dependencies
+   # Frontend dependencies
    cd ../frontend
    npm install
    ```
 
-3. **Setup Environment Variables**
-
-   **Backend (.env)**
+3. **Backend Environment** (`.env` in backend folder)
    ```env
    PORT=5001
    NODE_ENV=development
    
-   # Database
+   # Database Configuration
    DB_HOST=your-rds-endpoint.amazonaws.com
    DB_PORT=5432
    DB_NAME=globetrotter
-   DB_USER=your-db-username
-   DB_PASSWORD=your-db-password
+   DB_USER=your-username
+   DB_PASSWORD=your-password
    
    # AWS Cognito
    AWS_REGION=your-region
-   COGNITO_USER_POOL_ID=your-user-pool-id
+   COGNITO_USER_POOL_ID=your-pool-id
    COGNITO_CLIENT_ID=your-client-id
    
-   # JWT
    JWT_SECRET=your-jwt-secret
-   
-   # Frontend URL
    FRONTEND_URL=http://localhost:3000
    ```
 
-   **Frontend (.env)**
+4. **Frontend Environment** (`.env` in frontend folder)
    ```env
    REACT_APP_API_URL=http://localhost:5001/api
    REACT_APP_AWS_REGION=your-region
-   REACT_APP_COGNITO_USER_POOL_ID=your-user-pool-id
+   REACT_APP_COGNITO_USER_POOL_ID=your-pool-id
    REACT_APP_COGNITO_CLIENT_ID=your-client-id
    ```
 
-## 🏃‍♂️ Running the Application
+### Running the Application
 
-### Development Mode
 ```bash
-# Run backend (from backend directory)
+# Start backend server (from backend directory)
 npm run dev
 
-# Run frontend (from frontend directory)
+# Start frontend development server (from frontend directory)
 npm start
 ```
 
-### Production Build
+**Application URLs:**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5001
+
+### Database Setup
+
 ```bash
-# Build frontend
-cd frontend
-npm run build
+# Initialize database (from backend directory)
+node migrations/sync-database.js
+
+# Seed sample data
+node scripts/seed-stories.js
 ```
 
 ## 🎨 Design System
 
-- **Primary Colors**: Purple Violet (#8b5cf6, #a78bfa)
-- **Typography**: Inter (Google Fonts)
-- **Effects**: Glass morphism with backdrop blur
-- **Animations**: Smooth transitions and hover effects
-- **Responsive**: Mobile-first approach
+### Color Palette
+- **Primary**: Purple Violet (#8b5cf6, #a78bfa)
+- **Accent**: Royal Violet (#663399)
+- **Background**: Dark gradient (#0f0f23 to #1a1a2e)
+- **Glass Effects**: Translucent overlays with backdrop blur
 
-## 📱 Features Overview
+### Typography
+- **Font Family**: Inter (Google Sans alternative)
+- **Weights**: 300, 400, 500, 600, 700, 800
+- **Responsive**: Fluid typography scaling
 
-### ✅ Completed
-- User authentication (login/signup/verification)
-- Responsive navigation with mobile menu
-- Dashboard with quick actions
-- Trip CRUD operations
-- Destination exploration
-- Modern UI with animations
+### UI Principles
+- **Glass Morphism**: Translucent cards with blur effects
+- **Dark Mode First**: Optimized for dark theme
+- **Smooth Animations**: 0.3s cubic-bezier transitions
+- **Mobile-First**: Responsive design approach
 
-### 🚧 In Progress
-- Itinerary builder
-- Budget tracking
-- Trip sharing
-- Advanced search
+## 📱 Feature Highlights
 
-## 🤝 Contributing
+### 🎯 Core Functionality
+- ✅ **Complete Authentication System** - AWS Cognito integration
+- ✅ **Trip Management** - Full CRUD with collaborative features
+- ✅ **Budget Tracking** - Expense categorization and analytics
+- ✅ **Interactive Calendar** - Timeline view with drag-and-drop
+- ✅ **Social Features** - Stories, sharing, and community
+- ✅ **Public Explorer** - Landing page for non-authenticated users
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+### 🌟 Advanced Features
+- ✅ **Real-time Collaboration** - Multi-user trip planning
+- ✅ **QR Code Sharing** - Easy trip sharing via QR codes
+- ✅ **City Database** - 30+ cities with comprehensive data
+- ✅ **Travel Stories** - Community-driven content
+- ✅ **Admin Dashboard** - User and content management
+- ✅ **Responsive Design** - Optimized for all screen sizes
 
-## 📄 License
+### 🎨 UI/UX Excellence
+- ✅ **Dark Mode Default** - Modern dark interface
+- ✅ **Glass Morphism** - Beautiful translucent effects
+- ✅ **Smooth Animations** - Polished user interactions
+- ✅ **Scroll-to-top** - Enhanced navigation experience
 
-MIT License - see LICENSE file for details
+## 📊 Project Structure
 
-## 🔧 Development Notes
+```
+GlobeTrotter/
+├── backend/                 # Node.js/Express API
+│   ├── config/             # Database and app configuration
+│   ├── controllers/        # Route handlers
+│   ├── middleware/         # Authentication middleware
+│   ├── models/            # Sequelize database models
+│   ├── routes/            # API route definitions
+│   ├── scripts/           # Database utilities
+│   └── server.js          # Main server file
+├── frontend/               # React.js application
+│   ├── public/            # Static assets
+│   ├── src/
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Route components
+│   │   ├── context/       # React context providers
+│   │   └── services/      # API service functions
+└── documentation/          # Project documentation
+```
 
-- Uses AWS RDS PostgreSQL for database
-- Implements JWT authentication with AWS Cognito
-- Responsive design with CSS Grid and Flexbox
-- Glass morphism effects with CSS backdrop-filter
-- React Icons for consistent iconography
+## 🎯 Odoo 25 Offline Round Submission
 
-## 📞 Support
+This project demonstrates:
+- **Full-Stack Development** - Complete MERN-like stack
+- **Modern UI/UX** - Contemporary design principles
+- **Scalable Architecture** - Production-ready structure
+- **Database Design** - Comprehensive relational schema
+- **Authentication & Security** - AWS Cognito integration
+- **Responsive Design** - Mobile-first approach
+- **Performance Optimization** - Efficient rendering and caching
 
-For support and questions, please open an issue in the repository.
+## 🚀 Deployment
+
+Refer to `PRODUCTION_DEPLOYMENT.md` for detailed deployment instructions including:
+- AWS RDS setup
+- Environment configuration
+- Production build process
+- Security considerations
+
+## 📞 Contact
+
+**Developer**: Madhav  
+**GitHub**: [@madhav-09](https://github.com/madhav-09)  
+**Project**: Odoo 25 Offline Round Submission
+
+---
+
+*Built with ❤️ for the Odoo 25 Offline Round*

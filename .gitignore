@@ -16,6 +16,21 @@ dist/
 # Database
 *.sqlite
 *.db
+database.sqlite
+
+# Uploads
+uploads/
+*/uploads/
+
+# Logs
+*.log
+server.log
+
+# Test files
+test-*.js
+check-*.js
+quick-fix.js
+feature-verification.js
 
 # Logs
 npm-debug.log*
